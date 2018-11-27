@@ -1,0 +1,78 @@
+<div>
+  <div class="card" style="width: 50%;">
+    <div class="card-header">
+      <input
+        type="text"
+        name="searchForm"
+        [formControl]="searchFormControl"
+        placeholder="search"
+      />
+    </div>
+    <div class="card-body">
+      <table cdk-table [dataSource]="tableDataSource$" class="table">
+        <tr
+          cdk-header-row
+          *cdkHeaderRowDef="displayedColumns"
+          class="thead-dark"
+        ></tr>
+        <tr cdk-row *cdkRowDef="let row; columns: displayedColumns"></tr>
+
+        <ng-container cdkColumnDef="id">
+          <th cdk-header-cell *cdkHeaderCellDef (click)="sort('id')">
+            Id
+            <span *ngIf="sortKey$.value === 'id'">
+              <i
+                [ngClass]="{
+                  'fas fa-angle-up': sortDirection$.value === 'asc'
+                }"
+              ></i>
+              <i
+                [ngClass]="{
+                  'fas fa-angle-down': sortDirection$.value === 'desc'
+                }"
+              ></i>
+            </span>
+          </th>
+          <td cdk-cell *cdkCellDef="let row">{{ row.id }}</td>
+        </ng-container>
+
+        <ng-container cdkColumnDef="name">
+          <th cdk-header-cell *cdkHeaderCellDef (click)="sort('name')">
+            Name
+            <span *ngIf="sortKey$.value === 'name'">
+              <i
+                [ngClass]="{
+                  'fas fa-angle-up': sortDirection$.value === 'asc'
+                }"
+              ></i>
+              <i
+                [ngClass]="{
+                  'fas fa-angle-down': sortDirection$.value === 'desc'
+                }"
+              ></i>
+            </span>
+          </th>
+          <td cdk-cell *cdkCellDef="let row">{{ row.name }}</td>
+        </ng-container>
+
+        <ng-container cdkColumnDef="buttons">
+          <th cdk-header-cell *cdkHeaderCellDef></th>
+          <td cdk-cell *cdkCellDef="let row; let i = index">
+            <button (click)="levelUp(row.id, i)">Level Up!!!</button>
+          </td>
+        </ng-container>
+      </table>
+
+      <ngb-pagination
+        [collectionSize]="totalRecords$.value"
+        [(page)]="currentPage$.value"
+        aria-label="Default pagination"
+        class="d-flex justify-content-end"
+        [maxSize]="pageSize$.value"
+        [rotate]="true"
+        [boundaryLinks]="true"
+        (pageChange)="pagination($event)"
+      ></ngb-pagination>
+    </div>
+  </div>
+</div>
